@@ -24,19 +24,15 @@ import {
  */
 const plugin: JupyterFrontEndPlugin<void> = {
   activate,
-  id: 'my-extension-name:buttonPlugin',
+  id: 'aalto-gpu-button',
   autoStart: true
 };
 
-//const wait = (ms: number) => new Promise(res => setTimeout(res, ms));
 /**
  * A notebook widget extension that adds a button to the toolbar.
  */
-// export
 export class ButtonExtension implements DocumentRegistry.IWidgetExtension<NotebookPanel, INotebookModel> {
-  /**
-   * Create a new extension object.
-   */
+
   app: JupyterFrontEnd
   constructor(application: JupyterFrontEnd) {
     this.app = application
@@ -44,10 +40,10 @@ export class ButtonExtension implements DocumentRegistry.IWidgetExtension<Notebo
 
   createNew(panel: NotebookPanel, context: DocumentRegistry.IContext<INotebookModel>): IDisposable {
     let callback = async () => {
-      let code = '!bash ./test.sh';
+      let code = '!bash ./test.sh ' + context.localPath;
       let session = new ClientSession({
         manager: this.app.serviceManager.sessions,
-        name: 'test',
+        name: 'tmp_kernel_for_executing_' + context.localPath,
         kernelPreference: {
           name: 'python3'
         }
@@ -57,14 +53,13 @@ export class ButtonExtension implements DocumentRegistry.IWidgetExtension<Notebo
           'Failed to initialize the session for GpuButton.\n${reason}'
         );
       });
-      console.log(session.kernel)
       session.kernel.requestExecute({ code });
       await session.kernel.ready;
       session.shutdown()
       //NotebookActions.runAll(panel.content, context.session);
     };
     let button = new ToolbarButton({
-      className: 'myButton',
+      className: 'GPUbutton',
       iconClassName: 'fa fa-play-circle',
       onClick: callback,
       tooltip: 'Run With Gpu'

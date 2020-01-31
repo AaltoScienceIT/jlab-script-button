@@ -1,3 +1,2 @@
 #!/bin/bash
-touch yay
-echo $1 > yay
+jupyter nbconvert --to notebook --execute --output executed_$1 $1
