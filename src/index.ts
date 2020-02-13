@@ -41,6 +41,9 @@ export class ButtonExtension implements DocumentRegistry.IWidgetExtension<Notebo
   createNew(panel: NotebookPanel, context: DocumentRegistry.IContext<INotebookModel>): IDisposable {
     let callback = async () => {
       let code = '!bash ./test.sh ' + context.localPath;
+      console.log(code)
+      console.log(context.path)
+      console.log(context.localPath)
       let session = new ClientSession({
         manager: this.app.serviceManager.sessions,
         name: 'tmp_kernel_for_executing_' + context.localPath,
@@ -62,10 +65,10 @@ export class ButtonExtension implements DocumentRegistry.IWidgetExtension<Notebo
       className: 'GPUbutton',
       iconClassName: 'fa fa-play-circle',
       onClick: callback,
-      tooltip: 'Run With Gpu'
+      tooltip: 'Run the entire notebook with GPU'
     });
 
-    panel.toolbar.insertItem(0, 'runAll', button);
+    panel.toolbar.insertItem(10, 'runGPU', button);
     return new DisposableDelegate(() => {
       button.dispose();
     });
