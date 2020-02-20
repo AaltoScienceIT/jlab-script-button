@@ -15,7 +15,7 @@ import {
 } from '@jupyterlab/docregistry';
 
 import {
-  /*NotebookActions,*/ NotebookPanel, INotebookModel
+  NotebookPanel, INotebookModel
 } from '@jupyterlab/notebook';
 
 
@@ -24,7 +24,7 @@ import {
  */
 const plugin: JupyterFrontEndPlugin<void> = {
   activate,
-  id: 'aalto-gpu-button',
+  id: 'scriptButton',
   autoStart: true
 };
 
@@ -39,36 +39,33 @@ export class ButtonExtension implements DocumentRegistry.IWidgetExtension<Notebo
   }
 
   createNew(panel: NotebookPanel, context: DocumentRegistry.IContext<INotebookModel>): IDisposable {
+    let code = '![ -z $BUTTON_EXTENSION_CODE ] && ./test.sh ' + context.localPath + 
+                ' || eval $BUTTON_EXTENSION_CODE ' + context.localPath;
     let callback = async () => {
-      let code = '!bash ./test.sh ' + context.localPath;
-      console.log(code)
-      console.log(context.path)
-      console.log(context.localPath)
       let session = new ClientSession({
         manager: this.app.serviceManager.sessions,
-        name: 'tmp_kernel_for_executing_' + context.localPath,
+        name: 'tmp_kernel_for_executing_button_code',
         kernelPreference: {
           name: 'python3'
         }
       });
       await session.initialize().catch(reason => {
         console.error(
-          'Failed to initialize the session for GpuButton.\n${reason}'
+          'Failed to initialize the session for codeButton.\n${reason}'
         );
       });
-      session.kernel.requestExecute({ code });
+      await session.kernel.requestExecute({ code });
       await session.kernel.ready;
       session.shutdown()
-      //NotebookActions.runAll(panel.content, context.session);
     };
     let button = new ToolbarButton({
-      className: 'GPUbutton',
+      className: 'scriptButton',
       iconClassName: 'fa fa-play-circle',
       onClick: callback,
-      tooltip: 'Run the entire notebook with GPU'
+      tooltip: 'Do a thing'
     });
 
-    panel.toolbar.insertItem(10, 'runGPU', button);
+    panel.toolbar.insertItem(10, 'scriptB', button);
     return new DisposableDelegate(() => {
       button.dispose();
     });
