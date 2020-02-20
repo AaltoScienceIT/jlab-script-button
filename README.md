@@ -1,8 +1,8 @@
-# aalto-gpu-button
+# jlab-script-button
 
 ![Github Actions Status](https://github.com/my_name/myextension/workflows/Build/badge.svg)
 
-A button for sending notebooks elsewhere for executing with gpu resources.
+A button that executes arbitrary code in the frontend of JupyterLab.
 
 
 ## Requirements
@@ -12,7 +12,7 @@ A button for sending notebooks elsewhere for executing with gpu resources.
 ## Install
 
 ```bash
-jupyter labextension install aalto-gpu-button
+jupyter labextension install @loncero/jlab-script-button
 ```
 
 ## Contributing
@@ -25,7 +25,7 @@ The `jlpm` command is JupyterLab's pinned version of
 
 ```bash
 # Clone the repo to your local environment
-# Move to aalto-gpu-button directory
+# Move to jlab-script-button directory
 # Install dependencies
 jlpm
 # Build Typescript source
@@ -50,6 +50,6 @@ jupyter lab --watch
 ### Uninstall
 
 ```bash
-jupyter labextension uninstall aalto-gpu-button
+jupyter labextension uninstall @loncero/jlab-script-button
 ```
 
