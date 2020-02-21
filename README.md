@@ -1,6 +1,6 @@
 # jlab-script-button
 
-A button that executes scripts in the frontend of JupyterLab.
+A JupyterLab extension that adds a button which can be used to execute scripts in the frontend of JupyterLab.
 
 ## Usage
 
