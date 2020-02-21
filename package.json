@@ -1,15 +1,15 @@
 {
   "name": "@loncero/jlab-script-button",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "A button that executes arbitrary code in the frontend of JupyterLab.",
   "keywords": [
     "jupyter",
     "jupyterlab",
     "jupyterlab-extension"
   ],
-  "homepage": "https://github.com/my_name/myextension",
+  "homepage": "https://github.com/AaltoScienceIT/jlab-script-button",
   "bugs": {
-    "url": "https://github.com/my_name/myextension/issues"
+    "url": "https://github.com/AaltoScienceIT/jlab-script-button/issues"
   },
   "license": "BSD-3-Clause",
   "author": "loncero",
@@ -22,7 +22,7 @@
   "style": "style/index.css",
   "repository": {
     "type": "git",
-    "url": "https://github.com/my_name/myextension.git"
+    "url": "https://github.com/AaltoScienceIT/jlab-script-button.git"
   },
   "scripts": {
     "build": "tsc",
