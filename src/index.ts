@@ -24,13 +24,11 @@ import {
  */
 const plugin: JupyterFrontEndPlugin<void> = {
   activate,
-  id: 'scriptButton',
+  id: 'jlab-script-button',
   autoStart: true
 };
 
-/**
- * A notebook widget extension that adds a button to the toolbar.
- */
+
 export class ButtonExtension implements DocumentRegistry.IWidgetExtension<NotebookPanel, INotebookModel> {
 
   app: JupyterFrontEnd
@@ -39,8 +37,8 @@ export class ButtonExtension implements DocumentRegistry.IWidgetExtension<Notebo
   }
 
   createNew(panel: NotebookPanel, context: DocumentRegistry.IContext<INotebookModel>): IDisposable {
-    let code = '![ -z $BUTTON_EXTENSION_CODE ] && /usr/local/bin/jlab_script_button.sh ' + context.localPath + 
-                ' || eval $BUTTON_EXTENSION_CODE ' + context.localPath;
+    let code = '![ -z $BUTTON_EXTENSION_SCRIPT_PATH ] && /usr/local/bin/jlab_script_button.sh ' + context.localPath + 
+                ' || eval $BUTTON_EXTENSION_SCRIPT_PATH ' + context.localPath;
     let callback = async () => {
       let session = new ClientSession({
         manager: this.app.serviceManager.sessions,
@@ -51,7 +49,7 @@ export class ButtonExtension implements DocumentRegistry.IWidgetExtension<Notebo
       });
       await session.initialize().catch(reason => {
         console.error(
-          'Failed to initialize the session for codeButton.\n${reason}'
+          'Failed to initialize the session for script button.\n${reason}'
         );
       });
       await session.kernel.requestExecute({ code });
@@ -59,7 +57,7 @@ export class ButtonExtension implements DocumentRegistry.IWidgetExtension<Notebo
       session.shutdown()
     };
     let button = new ToolbarButton({
-      className: 'scriptButton',
+      className: 'jlab-script-button',
       iconClassName: 'fa fa-play-circle',
       onClick: callback,
       tooltip: 'Do a thing'
