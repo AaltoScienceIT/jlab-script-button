@@ -1,13 +1,13 @@
 import {
   IDisposable, DisposableDelegate
-} from '@phosphor/disposable';
+} from '@lumino/disposable';
 
 import {
   JupyterFrontEnd, JupyterFrontEndPlugin
 } from '@jupyterlab/application';
 
 import {
-  ClientSession, ToolbarButton
+  ToolbarButton //, SessionContext
 } from '@jupyterlab/apputils';
 
 import {
@@ -18,6 +18,9 @@ import {
   NotebookPanel, INotebookModel
 } from '@jupyterlab/notebook';
 
+import { 
+  jupyterIcon 
+} from "@jupyterlab/ui-components";
 
 /**
  * The plugin registration information.
@@ -39,26 +42,33 @@ export class ButtonExtension implements DocumentRegistry.IWidgetExtension<Notebo
   createNew(panel: NotebookPanel, context: DocumentRegistry.IContext<INotebookModel>): IDisposable {
     let code = '![ -z $BUTTON_EXTENSION_SCRIPT_PATH ] && /usr/local/bin/jlab_script_button.sh ' + context.localPath + 
                 ' || eval $BUTTON_EXTENSION_SCRIPT_PATH ' + context.localPath;
+
     let callback = async () => {
-      let session = new ClientSession({
-        manager: this.app.serviceManager.sessions,
-        name: 'tmp_kernel_for_executing_button_code',
-        kernelPreference: {
-          name: 'python3'
-        }
-      });
-      await session.initialize().catch(reason => {
-        console.error(
-          'Failed to initialize the session for script button.\n${reason}'
-        );
-      });
+      
+//      let sessionContext = new SessionContext({
+//        sessionManager: this.app.serviceManager.sessions,
+//        specsManager: this.app.serviceManager.kernelspecs,
+//        name: 'tmp_kernel_for_executing_button_code',
+//        kernelPreference: {
+//          name: 'python3'
+//        }
+//      });
+//      await sessionContext.initialize();
+//      let session = sessionContext.session;
+      let session = context.sessionContext.session;
+//      await session.initialize().catch(reason => {
+//        console.error(
+//          'Failed to initialize the session for script button.\n${reason}'
+//        );
+//      });
+
       await session.kernel.requestExecute({ code });
-      await session.kernel.ready;
-      session.shutdown()
+//      await session.kernel.ready;
+//      session.shutdown()
     };
     let button = new ToolbarButton({
       className: 'jlab-script-button',
-      iconClassName: 'fa fa-play-circle',
+      icon: jupyterIcon,
       onClick: callback,
       tooltip: 'Do a thing'
     });
