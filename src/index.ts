@@ -37,7 +37,7 @@ export class ButtonExtension implements DocumentRegistry.IWidgetExtension<Notebo
   }
 
   createNew(panel: NotebookPanel, context: DocumentRegistry.IContext<INotebookModel>): IDisposable {
-    let code = '![ -z $BUTTON_EXTENSION_SCRIPT_PATH ] && /usr/local/bin/jlab_script_button.sh ' + context.localPath + 
+    let code = '![ -z $BUTTON_EXTENSION_SCRIPT_PATH ] && jlab_button_script ' + context.localPath + 
                 ' || eval $BUTTON_EXTENSION_SCRIPT_PATH ' + context.localPath;
     let callback = async () => {
       let session = new ClientSession({
