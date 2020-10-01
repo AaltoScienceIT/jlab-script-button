@@ -7,7 +7,7 @@ import {
 } from '@jupyterlab/application';
 
 import {
-  ToolbarButton //, SessionContext
+  ToolbarButton 
 } from '@jupyterlab/apputils';
 
 import {
@@ -44,27 +44,8 @@ export class ButtonExtension implements DocumentRegistry.IWidgetExtension<Notebo
                 ' || eval $BUTTON_EXTENSION_SCRIPT_PATH ' + context.localPath;
 
     let callback = async () => {
-      
-//      let sessionContext = new SessionContext({
-//        sessionManager: this.app.serviceManager.sessions,
-//        specsManager: this.app.serviceManager.kernelspecs,
-//        name: 'tmp_kernel_for_executing_button_code',
-//        kernelPreference: {
-//          name: 'python3'
-//        }
-//      });
-//      await sessionContext.initialize();
-//      let session = sessionContext.session;
       let session = context.sessionContext.session;
-//      await session.initialize().catch(reason => {
-//        console.error(
-//          'Failed to initialize the session for script button.\n${reason}'
-//        );
-//      });
-
       await session.kernel.requestExecute({ code });
-//      await session.kernel.ready;
-//      session.shutdown()
     };
     let button = new ToolbarButton({
       className: 'jlab-script-button',
