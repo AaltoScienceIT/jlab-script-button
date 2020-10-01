@@ -1,6 +1,6 @@
 {
   "name": "@loncero/jlab-script-button",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "description": "A button that executes arbitrary code in the frontend of JupyterLab.",
   "keywords": [
     "jupyter",

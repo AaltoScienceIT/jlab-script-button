@@ -7,7 +7,7 @@ A JupyterLab extension that adds a button which can be used to execute scripts i
 Adds a button into the notebook toolbar. Pushing the button starts a temporary python3 kernel named "tmp\_kernel\_for\_executing\_button\_code", which executes the following:
 
 ```bash
-![ -z $BUTTON_EXTENSION_SCRIPT_PATH ] && /usr/local/bin/jlab_script_button.sh [notebook_path] \ 
+![ -z $BUTTON_EXTENSION_SCRIPT_PATH ] && jlab_button_script [notebook_path] \ 
                                       || eval $BUTTON_EXTENSION_SCRIPT_PATH [notebook_path]
 ```
 So if ```$BUTTON_EXTENSION_SCRIPT_PATH``` is defined, the button runs the script at said path with the notebook's path as the argument. Otherwise the default script ```/usr/local/bin/jlab_script_button.sh``` is used.
