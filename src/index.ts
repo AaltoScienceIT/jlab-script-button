@@ -7,7 +7,7 @@ import {
 } from '@jupyterlab/application';
 
 import {
-  ToolbarButton 
+  ToolbarButton, Dialog
 } from '@jupyterlab/apputils';
 
 import {
@@ -44,8 +44,20 @@ export class ButtonExtension implements DocumentRegistry.IWidgetExtension<Notebo
                 ' || eval $BUTTON_EXTENSION_SCRIPT_PATH ' + context.localPath;
 
     let callback = async () => {
+
       let session = context.sessionContext.session;
       await session.kernel.requestExecute({ code });
+
+      const dialog = new Dialog({
+        title: "Job sent",
+        body: context.localPath + " sent to the job server",
+        buttons: [
+          Dialog.okButton({ label: 'Ok' })
+        ]
+      })
+      dialog.launch().then(
+        () => {console.log("Closed dialog window")});
+      
     };
     let button = new ToolbarButton({
       className: 'jlab-script-button',
